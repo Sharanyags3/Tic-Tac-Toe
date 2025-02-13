@@ -23,3 +23,9 @@ After installing the software, you need to do npm install to install the package
 ### start
 
 you can use npm start
+
+## Live Demo 🚀
+
+[Click here to view the live project](https://tic-tac-czexl46vx-sharanya-g-ss-projects.vercel.app)
+
+
