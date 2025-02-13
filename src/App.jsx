@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types"; 
 
 function Square({ value, onSquareClick }) {
   return (
@@ -10,7 +11,10 @@ function Square({ value, onSquareClick }) {
     </button>
   );
 }
-
+Square.propTypes = {
+  value: PropTypes.string,  
+  onSquareClick: PropTypes.func.isRequired,
+};
 export default function Board() {
   const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
@@ -19,20 +23,29 @@ export default function Board() {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
+    
     const nextSquares = squares.slice();
     nextSquares[i] = xIsNext ? "X" : "O";
     setSquares(nextSquares);
     setXIsNext(!xIsNext);
-
+  
     const winner = calculateWinner(nextSquares);
     if (winner) {
       setTimeout(() => {
         window.alert(`Winner: ${winner}`);
-        restGame();
+        resetGame();
+      }, 100);
+    } else if (!nextSquares.includes(null)) { 
+      
+      setTimeout(() => {
+        window.alert("It's a draw!");
+        resetGame();
       }, 100);
     }
   }
-  function restGame() {
+  
+
+  function resetGame() {
     setSquares(Array(9).fill(null));
     setXIsNext(true);
   }
@@ -40,7 +53,9 @@ export default function Board() {
   const winner = calculateWinner(squares);
   let status = winner
     ? `Winner: ${winner}`
-    : `Next Player: ${xIsNext ? "X" : "O"}`;
+    : squares.includes(null) 
+      ? `Next Player: ${xIsNext ? "X" : "O"}`
+      : "It's a draw!";
 
   return (
     <div className="game-container">
